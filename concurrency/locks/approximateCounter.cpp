@@ -28,12 +28,10 @@ public:
         localMuxs[idx].lock();
         localCounters[idx]++;
         localValue = localCounters[idx];
-        
-        // Check if we need to update global counter
+
         if (localValue >= threshold) {
             globalMux.lock();
-            
-            // Double-check after acquiring both locks
+    
             if (localCounters[idx] >= threshold) {
                 globalCount += localCounters[idx];
                 localCounters[idx] = 0;

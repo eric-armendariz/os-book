@@ -9,7 +9,7 @@
 class ApproxCounter {
 public:
     std::vector<int> localCounters;
-    std::mutex localMuxs[4];
+    std::mutex localMuxs[16];
     int globalCount;
     std::mutex globalMux;
     int size;
@@ -60,16 +60,16 @@ void bigIncrement(ApproxCounter* counter, int idx) {
 }
 
 int main() {
-    ApproxCounter counter(4, 100000);
-    std::thread threads[4];
+    ApproxCounter counter(16, 100000);
+    std::thread threads[16];
     
     printTime();
     
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 16; i++) {
         threads[i] = std::thread(bigIncrement, &counter, i);
     }
     
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 16; i++) {
         threads[i].join();
     }
     
